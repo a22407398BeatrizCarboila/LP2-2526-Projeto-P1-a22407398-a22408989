@@ -12,6 +12,15 @@ public class Player extends Programmer{
         super(id, name, languagesStr, color);
     }
 
+    /* getters */
+    public int getCurrentPosition(){
+        return currentPosition;
+    }
+
+    public PlayerStatus getStatus(){
+        return status;
+    }
+
     /* setters */
     public void setCurrentPosition(int position){
         this.currentPosition = position;
