@@ -117,6 +117,37 @@ public class GameManager {
             return null;
         }
 
+//        return player.getInfo() //classe
+
+        ArrayList<String> langs = new ArrayList<>(player.getFavoriteLanguages());
+        Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
+
+        String langsStr = String.join("; ", langs);
+
+        String[] info = new String[5];
+        info[0] = String.valueOf(player.getId());
+        info[1] = player.getName();
+        info[2] = langsStr;
+        info[3] = String.valueOf(player.getAvatarColor().getDisplayName());
+        info[4] = String.valueOf(player.getCurrentPosition());
+
+        return info;
+    }
+
+    public String getProgrammerInfoAsStr(int id) {
+        Player player = null;
+        for (Player p : players) {
+            if (p.getId() == id) {
+                player = p;
+                break;
+            }
+        }
+        if (player == null) {
+            return null;
+        }
+
+        //        return player.getInfo() //classe
+
         ArrayList<String> langs = new ArrayList<>(player.getFavoriteLanguages());
         Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
 
@@ -127,13 +158,7 @@ public class GameManager {
         info[1] = player.getName();
         info[2] = String.valueOf(player.getCurrentPosition());
         info[3] = langsStr;
-        info[4] = player.getStatus().getDisplayName();
-
-        return info;
-    }
-
-    public String getProgrammerInfoAsStr(int id) {
-        String[] info = getProgrammerInfo(id);
+        info[4] = String.valueOf(player.getStatus().getDisplayName());
 
         if (info == null) {
             return null;

@@ -4,7 +4,6 @@ import pt.ulusofona.lp2.greatprogrammingjourney.enums.Color;
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Player {
     /* fields */
@@ -12,7 +11,6 @@ public class Player {
     private String name;
     private ArrayList<String> favoriteLanguages = new ArrayList<>();
     private Color avatarColor;
-    private String avatarImageFileName;
     private int currentPosition;
     private PlayerStatus status;
 
@@ -27,23 +25,6 @@ public class Player {
             for (String l : languages) {
                 this.favoriteLanguages.add(l.trim());
             }
-        }
-
-        switch (color) {
-            case BLUE:
-                this.avatarImageFileName = "playerBlue.png";
-                break;
-            case BROWN:
-                this.avatarImageFileName = "playerBrown.png";
-                break;
-            case GREEN:
-                this.avatarImageFileName = "playerGreen.png";
-                break;
-            case PURPLE:
-                this.avatarImageFileName = "playerPurple.png";
-                break;
-            default:
-                break;
         }
     }
 
@@ -70,10 +51,6 @@ public class Player {
 
     public PlayerStatus getStatus(){
         return status;
-    }
-
-    public String getAvatarImageFileName() {
-        return avatarImageFileName;
     }
 
     /* setters */
