@@ -9,20 +9,11 @@ import java.util.*;
 public class GameManager {
     /* fields */
     private Board board;
-    private List<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     private TurnManager turnManager;
     private boolean gameIsOver;
     private Player winner;
     private int currentTurn;
-
-    /* getters */
-    public String getWinnerName() {
-        if (winner == null) {
-            return null;
-        }
-        return winner.getName();
-    }
-
 
     /* constructor */
     public GameManager() {
@@ -31,6 +22,14 @@ public class GameManager {
         this.gameIsOver = false;
         this.winner = null;
         this.currentTurn = 0;
+    }
+
+    /* getters */
+    public String getWinnerName() {
+        if (winner == null) {
+            return null;
+        }
+        return winner.getName();
     }
 
     /* methods */
@@ -49,7 +48,7 @@ public class GameManager {
 
         this.board = new Board(boardSize);
 
-        List<Player> listOfPlayers = new ArrayList<>();
+        ArrayList<Player> listOfPlayers = new ArrayList<>();
         Set<Integer> playerIds = new HashSet<>();
         Set<Color> colorsUsed = new HashSet<>();
 
@@ -102,7 +101,17 @@ public class GameManager {
         return true;
     }
 
-    //public String getImagePng(int nrSquare){}
+    public String getImagePng(int nrSquare){
+        if (board == null || nrSquare < 1 || nrSquare > board.getSize()) {
+            return null;
+        }
+
+        if (nrSquare == board.getSize()) {
+            return "glory.png";
+        }
+
+        return null;
+    }
 
     public String[] getProgrammerInfo(int id) {
         Player player = null;
@@ -116,7 +125,7 @@ public class GameManager {
             return null;
         }
 
-        List<String> langs = new ArrayList<>(player.getFavoriteLanguages());
+        ArrayList<String> langs = new ArrayList<>(player.getFavoriteLanguages());
         Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
 
         String langsStr = String.join("; ", langs);
@@ -141,12 +150,121 @@ public class GameManager {
         return String.join(" | ", info);
     }
 
+    public String[] getSlotInfo(int position){
+        if (board == null || position < 1 || position > board.getSize()) {
+            return null;
+        }
 
-    //public String[] getSlotInfo(int position){}
-    //public int getCurrentPlayerID(){}
-    //public boolean moveCurrentPlayer(int nrSpaces){}
-    //public boolean gameIsOver(){}
-    //public ArrayList<String> getGameResults(){}
-    //public JPanel getAuthorsPanel(){}
-    //public HashMap<String, String> customizeBoard(){}
+        StringBuilder listOfPlayerIds = new StringBuilder();
+
+        for (Player player : players) {
+            if (player.getCurrentPosition() == position) {
+                if (listOfPlayerIds.length() > 0) {
+                    listOfPlayerIds.append(",");
+                }
+                listOfPlayerIds.append(player.getId());
+            }
+        }
+
+        String result = listOfPlayerIds.length() > 0 ? listOfPlayerIds.toString() : "";
+
+        return new String[]{result};
+    }
+
+    public int getCurrentPlayerID(){
+        return turnManager.getCurrentPlayerID();
+    }
+
+    public boolean moveCurrentPlayer(int nrSpaces){
+        if (nrSpaces < 1 || nrSpaces > 6) {
+            return false;
+        }
+        if (board == null || turnManager == null) {
+            return false;
+        }
+
+        Player currentPlayer = turnManager.getCurrentPlayer();
+        int currentPosition = currentPlayer.getCurrentPosition();
+
+        int newPosition = currentPosition + nrSpaces;
+        if (newPosition > board.getSize()) {
+            newPosition = newPosition - board.getSize();
+        }
+
+        currentPlayer.setCurrentPosition(newPosition);
+
+        currentTurn++;
+
+        turnManager.nextTurn();
+
+        return true;
+    }
+
+    public boolean gameIsOver(){
+        if (board == null) {
+            return false;
+        }
+
+        int lastPosition = board.getSize();
+
+        for (Player player : players) {
+            if (player.getCurrentPosition() == lastPosition) {
+                winner = player;
+                gameIsOver = true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public ArrayList<String> getGameResults(){
+        ArrayList<String> results = new ArrayList<>();
+
+        if (!gameIsOver || winner == null) {
+            return results;
+        }
+
+        results.add("THE GREAT PROGRAMMING JOURNEY");
+        results.add("");
+        results.add("NR. DE TURNOS");
+        results.add(String.valueOf(currentTurn));
+        results.add("");
+        results.add("VENCEDOR");
+        results.add(winner.getName());
+        results.add("");
+        results.add("RESTANTES");
+
+        int lastPosition = board.getSize();
+
+        ArrayList<Player> remainingPlayers = new ArrayList<>(players);
+        remainingPlayers.remove(winner);
+
+        /* bubble sort - sort by closest to the finish */
+        for (int i = 0; i < remainingPlayers.size() - 1; i++) {
+            for (int j = 0; j < remainingPlayers.size() - 1 - i; j++) {
+                Player p1 = remainingPlayers.get(j);
+                Player p2 = remainingPlayers.get(j + 1);
+
+                if (p1.getCurrentPosition() < p2.getCurrentPosition()) {
+                    remainingPlayers.set(j, p2);
+                    remainingPlayers.set(j + 1, p1);
+                }
+            }
+        }
+
+        for (Player player : remainingPlayers) {
+            results.add(player.getName() + " " + player.getCurrentPosition());
+        }
+
+        return results;
+    }
+
+    public JPanel getAuthorsPanel(){
+        return null;
+    }
+
+    public HashMap<String, String> customizeBoard(){
+        return new HashMap<>();
+    }
 }

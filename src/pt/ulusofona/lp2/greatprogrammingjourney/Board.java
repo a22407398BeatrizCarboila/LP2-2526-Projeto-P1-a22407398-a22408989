@@ -5,26 +5,26 @@ import java.util.List;
 
 public class Board {
     /* fields */
-    private List<Slot> slots;
+    private ArrayList<Slot> slots;
     private int size;
-
-    /* getters */
-    public int getSize() {
-        return size;
-    }
-
-    public List<Slot> getSlots() {
-        return slots;
-    }
 
     /* constructor */
     public Board(int size) {
         this.size = size;
         this.slots = new ArrayList<>();
 
-        for (int i = 1; i <= size; i++) {
-            this.slots.add(new Slot(i));
+        for (int position = 1; position <= size; position++) {
+            slots.add(new Slot(position));
         }
+    }
+
+    /* getters */
+    public int getSize() {
+        return size;
+    }
+
+    public ArrayList<Slot> getSlots() {
+        return slots;
     }
 
     /* methods */
