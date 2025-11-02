@@ -2,13 +2,17 @@ package pt.ulusofona.lp2.greatprogrammingjourney;
 
 import javax.swing.*;
 import java.util.ArrayList;
-//import java.util.HashMap;
 
 public class GameManager {
+    /* attributes */
     Board board;
     ArrayList<Player>players;
     int currentPlayerIndex;
     int turnNumber;
+
+    /*  */
+
+    /* constructors */
 
     public GameManager(){
         this.board = new Board();
@@ -32,8 +36,15 @@ public class GameManager {
         return false;
     }
 
+    /* methods */
 
-    //public boolean createInitialBoard(String[][] playerInfo, int worldSize){}
+    public boolean createInitialBoard(String[][] playerInfo, int worldSize){
+Player p =
+
+        p.getId()
+    }
+
+
     //public String getImagePng(int nrSquare){}
     //public String[] getProgrammerInfo(int id){}
     //public String getProgrammerInfoAsStr(int id){}
