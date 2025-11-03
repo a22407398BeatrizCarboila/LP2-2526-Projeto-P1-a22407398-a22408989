@@ -10,18 +10,4 @@ public class Slot {
         this.index = index;
         this.imageFileName = null;
     }
-
-    /* getters */
-    public int getIndex() {
-        return index;
-    }
-
-    public String getImageFileName() {
-        return imageFileName;
-    }
-
-    /* setters */
-    public void setImageFileName(String imageName) {
-        this.imageFileName = imageName;
-    }
 }

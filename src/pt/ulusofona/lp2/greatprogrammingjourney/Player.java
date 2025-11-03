@@ -4,6 +4,7 @@ import pt.ulusofona.lp2.greatprogrammingjourney.enums.Color;
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Player {
     /* fields */
@@ -37,20 +38,8 @@ public class Player {
         return name;
     }
 
-    public ArrayList<String> getFavoriteLanguages(){
-        return favoriteLanguages;
-    }
-
-    public Color getAvatarColor(){
-        return avatarColor;
-    }
-
     public int getCurrentPosition(){
         return currentPosition;
-    }
-
-    public PlayerStatus getStatus(){
-        return status;
     }
 
     /* setters */
@@ -60,5 +49,35 @@ public class Player {
 
     public void setStatus(PlayerStatus status) {
         this.status = status;
+    }
+
+    /* methods */
+    public String[] getInfoArray() {
+        ArrayList<String> langs = new ArrayList<>(favoriteLanguages);
+        Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
+        String langsStr = String.join("; ", langs);
+
+        String[] info = new String[5];
+        info[0] = String.valueOf(id);
+        info[1] = name;
+        info[2] = langsStr;
+        info[3] = avatarColor.getDisplayName();
+        info[4] = String.valueOf(currentPosition);
+        return info;
+    }
+
+    public String getInfoString() {
+        ArrayList<String> langs = new ArrayList<>(favoriteLanguages);
+        Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
+        String langsStr = String.join("; ", langs);
+
+        String[] info = new String[5];
+        info[0] = String.valueOf(id);
+        info[1] = name;
+        info[2] = String.valueOf(currentPosition);
+        info[3] = langsStr;
+        info[4] = status.getDisplayName();
+
+        return String.join(" | ", info);
     }
 }

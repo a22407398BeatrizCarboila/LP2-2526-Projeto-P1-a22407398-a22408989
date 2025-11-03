@@ -117,21 +117,7 @@ public class GameManager {
             return null;
         }
 
-//        return player.getInfo() //classe
-
-        ArrayList<String> langs = new ArrayList<>(player.getFavoriteLanguages());
-        Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
-
-        String langsStr = String.join("; ", langs);
-
-        String[] info = new String[5];
-        info[0] = String.valueOf(player.getId());
-        info[1] = player.getName();
-        info[2] = langsStr;
-        info[3] = String.valueOf(player.getAvatarColor().getDisplayName());
-        info[4] = String.valueOf(player.getCurrentPosition());
-
-        return info;
+        return player.getInfoArray();
     }
 
     public String getProgrammerInfoAsStr(int id) {
@@ -146,25 +132,7 @@ public class GameManager {
             return null;
         }
 
-        //        return player.getInfo() //classe
-
-        ArrayList<String> langs = new ArrayList<>(player.getFavoriteLanguages());
-        Collections.sort(langs, String.CASE_INSENSITIVE_ORDER);
-
-        String langsStr = String.join("; ", langs);
-
-        String[] info = new String[5];
-        info[0] = String.valueOf(player.getId());
-        info[1] = player.getName();
-        info[2] = String.valueOf(player.getCurrentPosition());
-        info[3] = langsStr;
-        info[4] = String.valueOf(player.getStatus().getDisplayName());
-
-        if (info == null) {
-            return null;
-        }
-
-        return String.join(" | ", info);
+        return player.getInfoString();
     }
 
     public String[] getSlotInfo(int position){
@@ -202,10 +170,13 @@ public class GameManager {
 
         Player currentPlayer = turnManager.getCurrentPlayer();
         int currentPosition = currentPlayer.getCurrentPosition();
+        int boardSize = board.getSize();
 
         int newPosition = currentPosition + nrSpaces;
-        if (newPosition > board.getSize()) {
-            newPosition = newPosition - board.getSize();
+
+        if (newPosition > boardSize) {
+            int excess = newPosition - boardSize;
+            newPosition = boardSize - excess;
         }
 
         currentPlayer.setCurrentPosition(newPosition);
