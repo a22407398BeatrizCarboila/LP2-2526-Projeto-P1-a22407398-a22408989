@@ -1,4 +1,6 @@
-package pt.ulusofona.lp2.greatprogrammingjourney;
+package pt.ulusofona.lp2.greatprogrammingjourney.core;
+
+import pt.ulusofona.lp2.greatprogrammingjourney.player.Player;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

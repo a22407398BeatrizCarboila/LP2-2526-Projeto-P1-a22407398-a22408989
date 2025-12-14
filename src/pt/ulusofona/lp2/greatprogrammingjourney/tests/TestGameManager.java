@@ -1,7 +1,9 @@
-package pt.ulusofona.lp2.greatprogrammingjourney;
+package pt.ulusofona.lp2.greatprogrammingjourney.tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pt.ulusofona.lp2.greatprogrammingjourney.core.GameManager;
+
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 

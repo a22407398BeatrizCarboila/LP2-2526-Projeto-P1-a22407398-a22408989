@@ -1,4 +1,4 @@
-package pt.ulusofona.lp2.greatprogrammingjourney;
+package pt.ulusofona.lp2.greatprogrammingjourney.player;
 
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.Color;
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
