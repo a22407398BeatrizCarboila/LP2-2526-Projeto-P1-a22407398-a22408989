@@ -1,5 +1,6 @@
 package pt.ulusofona.lp2.greatprogrammingjourney.boarditems.abyss;
 
+import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
 import pt.ulusofona.lp2.greatprogrammingjourney.player.Player;
 
 public class BlueScreenOfDeathAbyss extends Abyss {
@@ -11,6 +12,7 @@ public class BlueScreenOfDeathAbyss extends Abyss {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        player.setStatus(PlayerStatus.DEFEATED);
+        return "Caiu em Blue Screen of Death! Perdeu o jogo.";
     }
 }
