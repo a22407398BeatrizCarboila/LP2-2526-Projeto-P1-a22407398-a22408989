@@ -296,8 +296,8 @@ public class GameManager {
             return null;
         }
 
-        if (currentPlayer.hasToolThatCancels(item)) {
-            return item.getName() + " anulado por ferramenta.";
+        if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
+            return null;
         }
 
         String message = null;
@@ -311,21 +311,28 @@ public class GameManager {
                 }
             }
 
-            message = item.react(currentPlayer);
+            return item.react(currentPlayer);
         }
-        else if (item.affectsAllPlayersInSlot()) {
+
+        if (currentPlayer.hasToolThatCancels(item)) {
+            currentPlayer.consumeToolThatCancels(item);
+            return item.getName() + " anulado por ferramenta.";
+        }
+
+        if (item.affectsAllPlayersInSlot()) {
             List<Player> playersHere = getPlayersInPosition(position);
 
             if (playersHere.size() >= 2) {
                 for (Player p : playersHere) {
-                    message = slot.react(p);
+                    if (p.getStatus() == PlayerStatus.IN_GAME) {
+                        message = slot.react(p);
+                    }
                 }
             }
-        } else {
-            message = slot.react(currentPlayer);
+            return message;
         }
 
-        return message;
+        return slot.react(currentPlayer);
     }
 
     public boolean gameIsOver(){

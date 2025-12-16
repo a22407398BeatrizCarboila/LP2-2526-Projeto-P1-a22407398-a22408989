@@ -144,10 +144,18 @@ public class Player {
     public boolean hasToolThatCancels(BoardItem item) {
         for (Tool tool : tools) {
             if (tool.cancels(item)) {
-                tools.remove(tool);
                 return true;
             }
         }
         return false;
     }
+    public void consumeToolThatCancels(BoardItem item) {
+        for (int i = 0; i < tools.size(); i++) {
+            if (tools.get(i).cancels(item)) {
+                tools.remove(i);
+                return;
+            }
+        }
+    }
+
 }
