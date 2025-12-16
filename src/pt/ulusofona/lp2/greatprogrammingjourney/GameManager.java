@@ -238,10 +238,9 @@ public class GameManager {
         String id = "";
 
         if (item != null) {
-            type = item instanceof pt.ulusofona.lp2.greatprogrammingjourney.boarditems.abyss.Abyss ? "A" : "T";
+            type = item.getType();
             id = String.valueOf(item.getId());
         }
-
 
         return new String[]{result, type, id};
     }
@@ -368,6 +367,10 @@ public class GameManager {
     }
 
     public void loadGame(File file) throws InvalidFileException, FileNotFoundException {
+    }
+
+    public boolean saveGame(File file) {
+        return false;
     }
 
     public JPanel getAuthorsPanel(){
