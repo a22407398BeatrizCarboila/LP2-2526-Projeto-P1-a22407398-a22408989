@@ -429,7 +429,73 @@ public class GameManager {
     }
 
     public boolean saveGame(File file) {
-        return false;
+        if (file == null || board == null || turnManager == null) {
+            return false;
+        }
+
+        try (java.io.PrintWriter writer = new java.io.PrintWriter(file)) {
+            writer.println(
+                    board.getSize() + ";" +
+                            currentTurn + ";" +
+                            turnManager.getCurrentPlayerID()
+            );
+
+            writer.println(players.size());
+            for (Player p : players) {
+                int status = (p.getStatus() == PlayerStatus.IN_GAME) ? 1 : 0;
+
+                String langs = "";
+                if (p.getInfoArray()[2] != null) {
+                    langs = p.getInfoArray()[2];
+                }
+
+                writer.println(
+                        p.getId() + ";" +
+                                p.getName() + ";" +
+                                p.getInfoArray()[3] + ";" +
+                                p.getCurrentPosition() + ";" +
+                                status + ";" +
+                                langs
+                );
+            }
+
+            List<String> abyssLines = new ArrayList<>();
+
+            for (int i = 1; i <= board.getSize(); i++) {
+                Slot slot = board.getSlot(i);
+                BoardItem item = slot.getItem();
+
+                if (item != null && !item.isCollectable()) {
+                    abyssLines.add(item.getId() + ";" + i);
+                }
+            }
+
+            writer.println(abyssLines.size());
+            for (String line : abyssLines) {
+                writer.println(line);
+            }
+
+            List<String> toolLines = new ArrayList<>();
+
+            for (int i = 1; i <= board.getSize(); i++) {
+                Slot slot = board.getSlot(i);
+                BoardItem item = slot.getItem();
+
+                if (item != null && item.isCollectable()) {
+                    toolLines.add(item.getId() + ";" + i);
+                }
+            }
+
+            writer.println(toolLines.size());
+            for (String line : toolLines) {
+                writer.println(line);
+            }
+
+            return true;
+
+        } catch (FileNotFoundException e) {
+            return false;
+        }
     }
 
     public JPanel getAuthorsPanel(){
