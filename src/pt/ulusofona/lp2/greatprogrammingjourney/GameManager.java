@@ -261,13 +261,11 @@ public class GameManager {
         Player currentPlayer = turnManager.getCurrentPlayer();
 
         if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
-            turnManager.nextTurn();
             return false;
         }
 
         if (currentPlayer.isStuck()) {
             currentPlayer.setStuck(false);
-            turnManager.nextTurn();
             return false;
         }
 
@@ -286,13 +284,8 @@ public class GameManager {
 
         reactToAbyssOrTool();
 
-        currentTurn++;
-
-        turnManager.nextTurn();
-
         return true;
     }
-
 
     public String reactToAbyssOrTool() {
         Player currentPlayer = turnManager.getCurrentPlayer();
@@ -306,10 +299,12 @@ public class GameManager {
         }
 
         if (currentPlayer.hasToolThatCancels(item)) {
+            currentTurn++;
+            turnManager.nextTurn();
             return item.getName() + " anulado por ferramenta.";
         }
 
-        String message = "";
+        String message = item.react(currentPlayer);
 
         if (item.swapsStuckPlayer()) {
             for (Player p : getPlayersInPosition(position)) {
@@ -317,25 +312,29 @@ public class GameManager {
                     p.setStuck(false);
                 }
             }
-            return item.react(currentPlayer);
         }
 
         if (item.affectsAllPlayersInSlot()) {
             for (Player p : getPlayersInPosition(position)) {
-                if (p.getStatus() == PlayerStatus.IN_GAME) {
-                    message = slot.react(p);
+                if (p != currentPlayer && p.getStatus() == PlayerStatus.IN_GAME) {
+                    item.react(p);
                 }
             }
-            return message;
         }
 
-        String result = slot.react(currentPlayer);
+        currentTurn++;
 
-        if (result == null) {
-            return "";
+        if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
+            turnManager.nextTurn();
+            return message == null ? "" : message;
         }
 
-        return result;
+        if (currentPlayer.isStuck()) {
+            return message == null ? "" : message;
+        }
+
+        turnManager.nextTurn();
+        return message == null ? "" : message;
     }
 
     public boolean gameIsOver(){
