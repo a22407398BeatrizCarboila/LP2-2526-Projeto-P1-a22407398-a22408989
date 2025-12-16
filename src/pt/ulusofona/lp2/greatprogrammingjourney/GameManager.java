@@ -117,11 +117,11 @@ public class GameManager {
 
             int position;
             int id;
-            String type;
+            int type;
 
             try {
                 position = Integer.parseInt(slotInfo[2]);
-                type = slotInfo[0];
+                type = Integer.parseInt(slotInfo[0]);
                 id = Integer.parseInt(slotInfo[1]);
             } catch (NumberFormatException e) {
                 return false;
@@ -131,7 +131,7 @@ public class GameManager {
                 return false;
             }
 
-            if (!type.equals("0") && !type.equals("1")) {
+            if (type != 0 && type != 1) {
                 return false;
             }
 

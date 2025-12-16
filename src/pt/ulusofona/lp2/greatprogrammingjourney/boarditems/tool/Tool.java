@@ -19,6 +19,6 @@ public abstract class Tool extends BoardItem {
 
     @Override
     public String getType() {
-        return "T";
+        return "1";
     }
 }

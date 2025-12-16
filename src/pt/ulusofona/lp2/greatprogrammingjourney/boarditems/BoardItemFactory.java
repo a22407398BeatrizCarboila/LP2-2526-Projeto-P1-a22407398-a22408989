@@ -5,10 +5,10 @@ import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.tool.*;
 
 public class BoardItemFactory {
     /* methods */
-    public static BoardItem create(String type, int id) {
-        if (type.equals("0")) {
+    public static BoardItem create(int type, int id) {
+        if (type == 0) {
             return createAbyss(id);
-        } else if (type.equals("1")) {
+        } else if (type == 1) {
             return createTool(id);
         }
         return null;

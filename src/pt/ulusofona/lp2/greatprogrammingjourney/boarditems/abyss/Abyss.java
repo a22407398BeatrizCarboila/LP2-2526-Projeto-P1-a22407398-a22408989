@@ -17,6 +17,6 @@ public abstract class Abyss extends BoardItem {
 
     @Override
     public String getType() {
-        return "A";
+        return "0";
     }
 }
