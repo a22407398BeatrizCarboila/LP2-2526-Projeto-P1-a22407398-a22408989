@@ -77,7 +77,7 @@ public class Player {
     public void setStuck(boolean stuck) {
         if(stuck){
             status = PlayerStatus.IN_GAME;
-        } else { status = PlayerStatus.DEFEATED; }
+        } else { status = PlayerStatus.STUCK; }
     }
 
     /* methods */

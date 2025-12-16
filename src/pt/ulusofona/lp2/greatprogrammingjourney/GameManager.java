@@ -340,10 +340,12 @@ public class GameManager {
             }
         }
 
-        if (item.affectsAllPlayersInSlot()) {
-            for (Player p : getPlayersInPosition(position)) {
-                if (p != currentPlayer && p.getStatus() == PlayerStatus.IN_GAME) {
-                    item.react(p);
+        if(players.size() >= 2){
+            if (item.affectsAllPlayersInSlot()) {
+                for (Player p : getPlayersInPosition(position)) {
+                    if (p != currentPlayer && p.getStatus() == PlayerStatus.IN_GAME) {
+                        item.react(p);
+                    }
                 }
             }
         }

@@ -3,7 +3,8 @@ package pt.ulusofona.lp2.greatprogrammingjourney.enums;
 public enum PlayerStatus {
     /* constants */
     IN_GAME("Em Jogo"),
-    DEFEATED("Derrotado");
+    DEFEATED("Derrotado"),
+    STUCK("Preso");
 
     /* field */
     private final String displayName;
