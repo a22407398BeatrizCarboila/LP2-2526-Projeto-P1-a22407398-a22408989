@@ -1,5 +1,6 @@
 package pt.ulusofona.lp2.greatprogrammingjourney.boarditems;
 
+import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.tool.Tool;
 import pt.ulusofona.lp2.greatprogrammingjourney.player.Player;
 
 public abstract class BoardItem {
@@ -27,7 +28,7 @@ public abstract class BoardItem {
     /* signature of a method that reacts - according to the boardItem type */
     public abstract String react(Player player);
 
-    public abstract String getType();
+    public abstract int getType();
 
     public boolean affectsAllPlayersInSlot() {
         return false;
@@ -35,5 +36,13 @@ public abstract class BoardItem {
 
     public boolean swapsStuckPlayer() {
         return false;
+    }
+
+    public boolean isCollectable() {
+        return false;
+    }
+
+    public Tool asTool() {
+        return null;
     }
 }

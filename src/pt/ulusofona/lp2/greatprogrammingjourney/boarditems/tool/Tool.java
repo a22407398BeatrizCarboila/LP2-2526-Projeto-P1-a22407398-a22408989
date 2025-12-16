@@ -18,7 +18,17 @@ public abstract class Tool extends BoardItem {
     public abstract boolean cancels(BoardItem item);
 
     @Override
-    public String getType() {
-        return "1";
+    public int getType() {
+        return 1;
+    }
+
+    @Override
+    public boolean isCollectable() {
+        return true;
+    }
+
+    @Override
+    public Tool asTool() {
+        return this;
     }
 }

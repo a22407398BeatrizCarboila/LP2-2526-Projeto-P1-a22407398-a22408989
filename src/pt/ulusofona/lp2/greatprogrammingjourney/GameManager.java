@@ -2,6 +2,7 @@ package pt.ulusofona.lp2.greatprogrammingjourney;
 
 import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.BoardItem;
 import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.BoardItemFactory;
+import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.tool.Tool;
 import pt.ulusofona.lp2.greatprogrammingjourney.core.Board;
 import pt.ulusofona.lp2.greatprogrammingjourney.core.Slot;
 import pt.ulusofona.lp2.greatprogrammingjourney.core.TurnManager;
@@ -282,8 +283,6 @@ public class GameManager {
 
         currentPlayer.setCurrentPosition(newPosition);
 
-        reactToAbyssOrTool();
-
         return true;
     }
 
@@ -295,13 +294,29 @@ public class GameManager {
         BoardItem item = slot.getItem();
 
         if (item == null) {
-            return "";
+            currentTurn++;
+            turnManager.nextTurn();
+            return null;
+        }
+
+        if (item.isCollectable()) {
+            Tool tool = item.asTool();
+
+            if (!currentPlayer.hasTool(tool)) {
+                currentPlayer.addTool(tool);
+                currentTurn++;
+                turnManager.nextTurn();
+                return "Apanhou a ferramenta " + tool.getName();
+            }
+
+            return "Já tens esta ferramenta";
         }
 
         if (currentPlayer.hasToolThatCancels(item)) {
+            currentPlayer.consumeToolThatCancels(item);
             currentTurn++;
             turnManager.nextTurn();
-            return item.getName() + " anulado por ferramenta.";
+            return "A ferramenta " + item.getName() + " anulou o abismo";
         }
 
         String message = item.react(currentPlayer);
@@ -323,19 +338,18 @@ public class GameManager {
         if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
             currentTurn++;
             turnManager.nextTurn();
-            return message == null ? "" : message;
+            return message;
         }
 
         if (currentPlayer.isStuck()) {
             currentTurn++;
-            turnManager.nextTurn();
-            return message == null ? "" : message;
+            return message;
         }
 
         currentTurn++;
         turnManager.nextTurn();
 
-        return message == null ? "" : message;
+        return message;
     }
 
     public boolean gameIsOver(){

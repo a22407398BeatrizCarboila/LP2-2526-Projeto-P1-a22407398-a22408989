@@ -138,7 +138,22 @@ public class Player {
     }
 
     public void addTool(Tool tool) {
-        tools.add(tool);
+        if (tool != null) {
+            tools.add(tool);
+        }
+    }
+
+    public boolean hasTool(BoardItem tool) {
+        if (tool == null) {
+            return false;
+        }
+
+        for (Tool t : tools) {
+            if (t.getId() == tool.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean hasToolThatCancels(BoardItem item) {
@@ -149,6 +164,7 @@ public class Player {
         }
         return false;
     }
+
     public void consumeToolThatCancels(BoardItem item) {
         for (int i = 0; i < tools.size(); i++) {
             if (tools.get(i).cancels(item)) {
@@ -157,5 +173,4 @@ public class Player {
             }
         }
     }
-
 }

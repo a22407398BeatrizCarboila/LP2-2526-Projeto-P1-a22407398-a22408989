@@ -16,7 +16,7 @@ public abstract class Abyss extends BoardItem {
     public abstract String react(Player player);
 
     @Override
-    public String getType() {
-        return "0";
+    public int getType() {
+        return 0;
     }
 }

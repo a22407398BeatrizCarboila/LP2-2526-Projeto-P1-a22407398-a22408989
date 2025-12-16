@@ -28,7 +28,7 @@ public class TurnManager {
     }
 
     public void nextTurn() {
-        if (!playerOrder.isEmpty()) {
+         if (!playerOrder.isEmpty()) {
             playerOrder.add(playerOrder.poll());
             currentPlayer = playerOrder.peek();
         }
