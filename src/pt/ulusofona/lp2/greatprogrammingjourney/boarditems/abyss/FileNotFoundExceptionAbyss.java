@@ -11,6 +11,15 @@ public class FileNotFoundExceptionAbyss extends Abyss {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        int newPosition = player.getCurrentPosition() - 3;
+
+        if (newPosition < 1) {
+            newPosition = 1;
+        }
+
+        player.setCurrentPosition(newPosition);
+
+        return "Caiu num FileNotFoundException! Recuou 3 casas.";
     }
+
 }
