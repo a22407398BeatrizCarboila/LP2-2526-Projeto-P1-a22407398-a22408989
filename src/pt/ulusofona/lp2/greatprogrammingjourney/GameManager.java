@@ -259,11 +259,6 @@ public class GameManager {
 
         Player currentPlayer = turnManager.getCurrentPlayer();
 
-        if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
-            turnManager.nextTurn();
-            return true;
-        }
-
         if (currentPlayer.isStuck()) {
             turnManager.nextTurn(); /* player loses the play */
             currentTurn++;
@@ -298,7 +293,11 @@ public class GameManager {
         BoardItem item = slot.getItem();
 
         if (item == null) {
-            return "";
+            return null;
+        }
+
+        if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
+            return null;
         }
 
         String message = null;

@@ -1,6 +1,5 @@
 package pt.ulusofona.lp2.greatprogrammingjourney.core;
 
-import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
 import pt.ulusofona.lp2.greatprogrammingjourney.player.Player;
 
 import java.util.ArrayList;
@@ -29,10 +28,9 @@ public class TurnManager {
     }
 
     public void nextTurn() {
-        do {
-            Player p = playerOrder.poll();
-            playerOrder.add(p);
-            currentPlayer = p;
-        } while (currentPlayer.getStatus() != PlayerStatus.IN_GAME);
+        if (!playerOrder.isEmpty()) {
+            playerOrder.add(playerOrder.poll());
+            currentPlayer = playerOrder.peek();
+        }
     }
 }
