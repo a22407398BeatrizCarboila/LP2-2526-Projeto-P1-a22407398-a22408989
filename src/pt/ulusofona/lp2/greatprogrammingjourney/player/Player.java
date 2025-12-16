@@ -58,6 +58,8 @@ public class Player {
         return stuck;
     }
 
+    public ArrayList<String> getFavoriteLanguages() { return favoriteLanguages; }
+
     /* setters */
     public void setCurrentPosition(int position){
         positionHistory.add(this.currentPosition);
