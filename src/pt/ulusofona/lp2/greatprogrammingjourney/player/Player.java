@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.greatprogrammingjourney.player;
 
+import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.BoardItem;
+import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.tool.Tool;
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.Color;
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
 
@@ -17,6 +19,7 @@ public class Player {
     private ArrayList<Integer> positionHistory = new ArrayList<>();
     private int lastDiceValue;
     private boolean stuck = false;
+    private ArrayList<Tool> tools = new ArrayList<>();
 
     /* constructor */
     public Player(int id, String name, String languagesStr, Color color){
@@ -121,5 +124,19 @@ public class Player {
         }
 
         return positionHistory.get(size - 1);
+    }
+
+    public void addTool(Tool tool) {
+        tools.add(tool);
+    }
+
+    public boolean hasToolThatCancels(BoardItem item) {
+        for (Tool tool : tools) {
+            if (tool.cancels(item)) {
+                tools.remove(tool);
+                return true;
+            }
+        }
+        return false;
     }
 }

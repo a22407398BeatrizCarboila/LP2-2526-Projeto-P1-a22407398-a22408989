@@ -15,6 +15,8 @@ public abstract class Tool extends BoardItem {
     @Override
     public abstract String react(Player player);
 
+    public abstract boolean cancels(BoardItem item);
+
     @Override
     public String getType() {
         return "T";
