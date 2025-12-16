@@ -11,6 +11,15 @@ public class SyntaxErrorAbyss extends Abyss {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        int currentPosition = player.getCurrentPosition();
+        int newPosition = currentPosition - 1;
+
+        if (newPosition < 1) {
+            newPosition = 1;
+        }
+
+        player.setCurrentPosition(newPosition);
+
+        return "Caiu num erro de sintaxe! Recua 1 casa";
     }
 }
