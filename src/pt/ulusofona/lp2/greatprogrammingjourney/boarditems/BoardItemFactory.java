@@ -6,9 +6,9 @@ import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.tool.*;
 public class BoardItemFactory {
     /* methods */
     public static BoardItem create(String type, int id) {
-        if (type.equals("A")) {
+        if (type.equals("0")) {
             return createAbyss(id);
-        } else if (type.equals("T")) {
+        } else if (type.equals("1")) {
             return createTool(id);
         }
         return null;

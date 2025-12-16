@@ -110,7 +110,7 @@ public class GameManager {
             return true;
         }
 
-        for (String[] slotInfo  : abyssesAndTools) {
+        for (String[] slotInfo : abyssesAndTools) {
             if (slotInfo == null || slotInfo.length < 3) {
                 return false;
             }
@@ -120,9 +120,9 @@ public class GameManager {
             String type;
 
             try {
-                position = Integer.parseInt(slotInfo[0]);
-                type = slotInfo[1];
-                id = Integer.parseInt(slotInfo[2]);
+                position = Integer.parseInt(slotInfo[2]);
+                type = slotInfo[0];
+                id = Integer.parseInt(slotInfo[1]);
             } catch (NumberFormatException e) {
                 return false;
             }
@@ -131,7 +131,7 @@ public class GameManager {
                 return false;
             }
 
-            if (!type.equals("A") && !type.equals("T")) {
+            if (!type.equals("0") && !type.equals("1")) {
                 return false;
             }
 

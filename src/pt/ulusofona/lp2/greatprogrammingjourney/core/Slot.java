@@ -32,7 +32,7 @@ public class Slot {
 
     public String react(Player player) {
         if (item == null) {
-            return null;
+            return "";
         }
         return item.react(player);
     }
