@@ -1,5 +1,6 @@
 package pt.ulusofona.lp2.greatprogrammingjourney.core;
 
+import pt.ulusofona.lp2.greatprogrammingjourney.InvalidFileException;
 import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.BoardItem;
 import pt.ulusofona.lp2.greatprogrammingjourney.boarditems.BoardItemFactory;
 import pt.ulusofona.lp2.greatprogrammingjourney.enums.Color;
@@ -7,6 +8,8 @@ import pt.ulusofona.lp2.greatprogrammingjourney.enums.PlayerStatus;
 import pt.ulusofona.lp2.greatprogrammingjourney.player.Player;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class GameManager {
@@ -226,7 +229,19 @@ public class GameManager {
 
         String result = listOfPlayerIds.length() > 0 ? listOfPlayerIds.toString() : "";
 
-        return new String[]{result};
+        Slot slot = board.getSlot(position);
+        BoardItem item = slot.getItem();
+
+        String type = "";
+        String id = "";
+
+        if (item != null) {
+            type = item instanceof pt.ulusofona.lp2.greatprogrammingjourney.boarditems.abyss.Abyss ? "A" : "T";
+            id = String.valueOf(item.getId());
+        }
+
+
+        return new String[]{result, type, id};
     }
 
     public int getCurrentPlayerID(){
@@ -262,10 +277,32 @@ public class GameManager {
     }
 
     public String reactToAbyssOrTool() {
-        Player current = players.get(currentTurn);
-        Slot slot = board.getSlot(current.getCurrentPosition());
+        Player currentPlayer = turnManager.getCurrentPlayer();
+        int position = currentPlayer.getCurrentPosition();
 
-        return slot.react(current);
+        Slot slot = board.getSlot(position);
+        BoardItem item = slot.getItem();
+
+        if (item == null) {
+            return null;
+        }
+
+        String message = null;
+
+        if (item.affectsAllPlayersInSlot()) {
+            List<Player> playersHere = getPlayersInPosition(position);
+
+            if (playersHere.size() >= 2) {
+                for (Player p : playersHere) {
+                    message = slot.react(p);
+                }
+            }
+
+        } else {
+            message = slot.react(currentPlayer);
+        }
+
+        return message;
     }
 
     public boolean gameIsOver(){
@@ -328,11 +365,28 @@ public class GameManager {
         return results;
     }
 
+    public void loadGame(File file) throws InvalidFileException, FileNotFoundException {
+    }
+
     public JPanel getAuthorsPanel(){
         return null;
     }
 
     public HashMap<String, String> customizeBoard(){
         return new HashMap<>();
+    }
+
+    /* helper methods */
+    private List<Player> getPlayersInPosition(int position) {
+        List<Player> result = new ArrayList<>();
+
+        for (Player p : players) {
+            if (p.getStatus() == PlayerStatus.IN_GAME &&
+                    p.getCurrentPosition() == position) {
+                result.add(p);
+            }
+        }
+
+        return result;
     }
 }

@@ -21,6 +21,10 @@ public class Slot {
         return index;
     }
 
+    public BoardItem getItem() {
+        return item;
+    }
+
     /* setters */
     public void setItem(BoardItem item) {
         this.item = item;
