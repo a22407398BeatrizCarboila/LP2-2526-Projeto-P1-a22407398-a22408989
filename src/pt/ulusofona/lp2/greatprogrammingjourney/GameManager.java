@@ -426,6 +426,92 @@ public class GameManager {
     }
 
     public void loadGame(File file) throws InvalidFileException, FileNotFoundException {
+        if (file == null || !file.exists()) {
+            throw new FileNotFoundException();
+        }
+
+        try (Scanner sc = new Scanner(file)) {
+            String worldLine = nextNonEmptyLine(sc);
+            String[] worldParts = worldLine.split(";");
+
+            if (worldParts.length != 3) {
+                throw new InvalidFileException();
+            }
+
+            int boardSize = Integer.parseInt(worldParts[0]);
+            int loadedTurn = Integer.parseInt(worldParts[1]);
+            int currentPlayerId = Integer.parseInt(worldParts[2]);
+
+            Board newBoard = new Board(boardSize);
+
+            int nrPlayers = Integer.parseInt(nextNonEmptyLine(sc));
+            ArrayList<Player> newPlayers = new ArrayList<>();
+
+            for (int i = 0; i < nrPlayers; i++) {
+                String[] p = nextNonEmptyLine(sc).split(";", 6);
+                if (p.length != 6) {
+                    throw new InvalidFileException();
+                }
+
+                int id = Integer.parseInt(p[0]);
+                String name = p[1];
+                String color = p[2];
+                int position = Integer.parseInt(p[3]);
+                int status = Integer.parseInt(p[4]);
+                String langs = p[5];
+
+                Player player = new Player(id, name, langs, Color.fromString(color));
+                player.setCurrentPosition(position);
+                player.setStatus(status == 1 ? PlayerStatus.IN_GAME : PlayerStatus.DEFEATED);
+
+                newPlayers.add(player);
+            }
+
+            int abyssCount = Integer.parseInt(nextNonEmptyLine(sc));
+
+            for (int i = 0; i < abyssCount; i++) {
+                String[] a = nextNonEmptyLine(sc).split(";");
+                if (a.length != 2) {
+                    throw new InvalidFileException();
+                }
+
+                int abyssId = Integer.parseInt(a[0]);
+                int position = Integer.parseInt(a[1]);
+
+                BoardItem abyss = BoardItemFactory.create(0, abyssId);
+                newBoard.getSlot(position).setItem(abyss);
+            }
+
+            int toolCount = Integer.parseInt(nextNonEmptyLine(sc));
+
+            for (int i = 0; i < toolCount; i++) {
+                String[] t = nextNonEmptyLine(sc).split(";");
+                if (t.length != 2) {
+                    throw new InvalidFileException();
+                }
+
+                int toolId = Integer.parseInt(t[0]);
+                int position = Integer.parseInt(t[1]);
+
+                BoardItem tool = BoardItemFactory.create(1, toolId);
+                newBoard.getSlot(position).setItem(tool);
+            }
+
+            this.board = newBoard;
+            this.players = newPlayers;
+            this.turnManager = new TurnManager(newPlayers);
+            this.currentTurn = loadedTurn;
+
+            while (turnManager.getCurrentPlayerID() != currentPlayerId) {
+                turnManager.nextTurn();
+            }
+
+            this.winner = null;
+            this.gameIsOver = false;
+
+        } catch (IllegalArgumentException e) {
+            throw new InvalidFileException();
+        }
     }
 
     public boolean saveGame(File file) {
@@ -518,5 +604,15 @@ public class GameManager {
         }
 
         return result;
+    }
+
+    private String nextNonEmptyLine(Scanner sc) throws InvalidFileException {
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (!line.isEmpty()) {
+                return line;
+            }
+        }
+        throw new InvalidFileException();
     }
 }
