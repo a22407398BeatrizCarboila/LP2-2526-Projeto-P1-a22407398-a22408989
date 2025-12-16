@@ -234,15 +234,15 @@ public class GameManager {
         Slot slot = board.getSlot(position);
         BoardItem item = slot.getItem();
 
-        String type = "";
         String id = "";
+        String name = "";
 
         if (item != null) {
-            type = item.getType();
             id = String.valueOf(item.getId());
+            name = item.getName();
         }
 
-        return new String[]{result, type, id};
+        return new String[]{result, name, id};
     }
 
     public int getCurrentPlayerID(){
@@ -293,40 +293,28 @@ public class GameManager {
         BoardItem item = slot.getItem();
 
         if (item == null) {
-            return null;
+            return "";
         }
 
-        if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
-            return null;
+        if (currentPlayer.hasToolThatCancels(item)) {
+            return item.getName() + " anulado por ferramenta.";
         }
 
-        String message = null;
+        String message = "";
 
         if (item.swapsStuckPlayer()) {
-            List<Player> playersHere = getPlayersInPosition(position);
-
-            for (Player p : playersHere) {
+            for (Player p : getPlayersInPosition(position)) {
                 if (p.isStuck()) {
                     p.setStuck(false);
                 }
             }
-
             return item.react(currentPlayer);
         }
 
-        if (currentPlayer.hasToolThatCancels(item)) {
-            currentPlayer.consumeToolThatCancels(item);
-            return item.getName() + " anulado por ferramenta.";
-        }
-
         if (item.affectsAllPlayersInSlot()) {
-            List<Player> playersHere = getPlayersInPosition(position);
-
-            if (playersHere.size() >= 2) {
-                for (Player p : playersHere) {
-                    if (p.getStatus() == PlayerStatus.IN_GAME) {
-                        message = slot.react(p);
-                    }
+            for (Player p : getPlayersInPosition(position)) {
+                if (p.getStatus() == PlayerStatus.IN_GAME) {
+                    message = slot.react(p);
                 }
             }
             return message;
