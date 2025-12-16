@@ -258,6 +258,13 @@ public class GameManager {
         }
 
         Player currentPlayer = turnManager.getCurrentPlayer();
+
+        if (currentPlayer.isStuck()) {
+            turnManager.nextTurn(); /* player loses the play */
+            currentTurn++;
+            return true;
+        }
+
         currentPlayer.setLastDiceValue(nrSpaces);
 
         int currentPosition = currentPlayer.getCurrentPosition();
@@ -291,7 +298,18 @@ public class GameManager {
 
         String message = null;
 
-        if (item.affectsAllPlayersInSlot()) {
+        if (item.swapsStuckPlayer()) {
+            List<Player> playersHere = getPlayersInPosition(position);
+
+            for (Player p : playersHere) {
+                if (p.isStuck()) {
+                    p.setStuck(false);
+                }
+            }
+
+            message = item.react(currentPlayer);
+        }
+        else if (item.affectsAllPlayersInSlot()) {
             List<Player> playersHere = getPlayersInPosition(position);
 
             if (playersHere.size() >= 2) {
@@ -299,7 +317,6 @@ public class GameManager {
                     message = slot.react(p);
                 }
             }
-
         } else {
             message = slot.react(currentPlayer);
         }

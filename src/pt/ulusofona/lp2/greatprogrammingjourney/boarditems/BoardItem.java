@@ -32,4 +32,8 @@ public abstract class BoardItem {
     public boolean affectsAllPlayersInSlot() {
         return false;
     }
+
+    public boolean swapsStuckPlayer() {
+        return false;
+    }
 }

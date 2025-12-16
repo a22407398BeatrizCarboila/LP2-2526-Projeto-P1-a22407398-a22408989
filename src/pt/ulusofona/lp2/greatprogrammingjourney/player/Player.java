@@ -16,6 +16,7 @@ public class Player {
     private PlayerStatus status;
     private ArrayList<Integer> positionHistory = new ArrayList<>();
     private int lastDiceValue;
+    private boolean stuck = false;
 
     /* constructor */
     public Player(int id, String name, String languagesStr, Color color){
@@ -50,6 +51,10 @@ public class Player {
         return lastDiceValue;
     }
 
+    public boolean isStuck() {
+        return stuck;
+    }
+
     /* setters */
     public void setCurrentPosition(int position){
         positionHistory.add(this.currentPosition);
@@ -62,6 +67,10 @@ public class Player {
 
     public void setLastDiceValue(int lastDiceValue) {
         this.lastDiceValue = lastDiceValue;
+    }
+
+    public void setStuck(boolean stuck) {
+        this.stuck = stuck;
     }
 
     /* methods */

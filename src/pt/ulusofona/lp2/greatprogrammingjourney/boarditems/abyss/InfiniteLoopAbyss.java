@@ -11,6 +11,12 @@ public class InfiniteLoopAbyss extends Abyss {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        player.setStuck(true);
+        return "Caiu num ciclo infinito! Ficou preso na casa.";
+    }
+
+    @Override
+    public boolean swapsStuckPlayer() {
+        return true;
     }
 }
