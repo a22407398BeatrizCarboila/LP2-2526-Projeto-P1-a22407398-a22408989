@@ -12,11 +12,13 @@ public class ProfessorHelpTool extends Tool {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        return "Recebeu a ferramenta Ajuda do Professor";
     }
 
     @Override
     public boolean cancels(BoardItem item) {
-        return false;
+        return item.getId() == 1   /* Logic Error abyss */
+                || item.getId() == 3   /* FileNotFoundException abyss */
+                || item.getId() == 5;  /* Duplicate Code abyss */
     }
 }

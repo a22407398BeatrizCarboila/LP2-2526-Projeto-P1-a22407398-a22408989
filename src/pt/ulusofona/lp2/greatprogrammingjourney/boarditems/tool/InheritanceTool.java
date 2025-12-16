@@ -12,11 +12,12 @@ public class InheritanceTool extends Tool {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        player.addTool(this);
+        return "Recebeu a ferramenta Herança";
     }
 
     @Override
     public boolean cancels(BoardItem item) {
-        return false;
+        return item.getName().equals("Herança");
     }
 }
