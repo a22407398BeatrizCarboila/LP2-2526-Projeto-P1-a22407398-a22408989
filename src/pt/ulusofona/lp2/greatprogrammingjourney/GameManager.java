@@ -275,12 +275,16 @@ public class GameManager {
             return false;
         }
 
-        if (currentPlayer.getFavoriteLanguages().get(0).equals("Assembly") && nrSpaces > 2) {
-            return false;
-        }
+        if (!currentPlayer.getFavoriteLanguages().isEmpty()) {
+            String lang = currentPlayer.getFavoriteLanguages().get(0);
 
-        if (currentPlayer.getFavoriteLanguages().get(0).equals("C") && nrSpaces > 3){
-            return false;
+            if (lang.equals("Assembly") && nrSpaces > 2) {
+                return false;
+            }
+
+            if (lang.equals("C") && nrSpaces > 3) {
+                return false;
+            }
         }
 
         currentPlayer.setLastDiceValue(nrSpaces);
@@ -290,8 +294,7 @@ public class GameManager {
         int newPosition = currentPosition + nrSpaces;
 
         if (newPosition > boardSize) {
-            int excess = newPosition - boardSize;
-            newPosition = boardSize - excess;
+            newPosition = boardSize;
         }
 
         currentPlayer.setCurrentPosition(newPosition);
