@@ -329,7 +329,13 @@ public class GameManager {
             return message;
         }
 
-        return slot.react(currentPlayer);
+        String result = slot.react(currentPlayer);
+
+        if (result == null) {
+            return "";
+        }
+
+        return result;
     }
 
     public boolean gameIsOver(){
