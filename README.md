@@ -36,7 +36,7 @@ Foram introduzidos novos requisitos funcionais, como:
 ---
 Abaixo encontra-se o diagrama UML desenvolvido para representar a estrutura principal do projeto:
 
-![Diagrama UML](diagrama.png?raw=true "Diagrama UML")
+![Diagrama UML](diagrama.png?raw=true)
 
 
 ---
