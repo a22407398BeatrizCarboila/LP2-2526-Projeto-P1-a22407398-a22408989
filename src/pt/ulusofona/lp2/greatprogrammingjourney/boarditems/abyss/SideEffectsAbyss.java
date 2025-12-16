@@ -11,6 +11,8 @@ public class SideEffectsAbyss extends Abyss {
     /* method */
     @Override
     public String react(Player player) {
-        return null;
+        int targetPosition = player.getPositionTwoMovesAgo();
+        player.setCurrentPosition(targetPosition);
+        return "Caiu nos efeitos secundários! Recua para a posição onde estava há 2 movimentos atrás";
     }
 }
