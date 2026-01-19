@@ -20,6 +20,7 @@ public class Player {
     private int lastDiceValue;
     private boolean stuck = false;
     private ArrayList<Tool> tools = new ArrayList<>();
+    private int lastMoveDistance = 0;
 
     /* constructor */
     public Player(int id, String name, String languagesStr, Color color){
@@ -145,6 +146,7 @@ public class Player {
     public void addTool(Tool tool) {
         if (tool != null) {
             tools.add(tool);
+            tools.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName())); /*ordem alfabética */
         }
     }
 
@@ -190,5 +192,13 @@ public class Player {
         }
 
         return String.join(";", toolNames);
+    }
+
+
+    public void  setLastMoveDistance(int distance){
+        this.lastMoveDistance = distance;
+    }
+    public int getLastMoveDistance(){
+        return lastMoveDistance;
     }
 }

@@ -23,6 +23,8 @@ public class GameManager {
     private boolean gameIsOver;
     private Player winner;
     private int currentTurn;
+    private int turnNumber = 1;
+    private int lastMoveDistance = 0;
 
     /* constructor */
     public GameManager() {
@@ -297,7 +299,11 @@ public class GameManager {
             newPosition = boardSize;
         }
 
+        currentPlayer.setLastMoveDistance(newPosition - currentPosition);
+
         currentPlayer.setCurrentPosition(newPosition);
+
+        turnNumber++;
 
         return true;
     }
@@ -312,6 +318,11 @@ public class GameManager {
         if (item == null) {
             currentTurn++;
             turnManager.nextTurn();
+                  if (noOneCanPlay()) {
+                      gameIsOver = true;
+                      winner = null;
+                      return "O jogo terminou empatado.";
+                  }
             return null;
         }
 
@@ -322,6 +333,11 @@ public class GameManager {
                 currentPlayer.addTool(tool);
                 currentTurn++;
                 turnManager.nextTurn();
+                  if (noOneCanPlay()) {
+                      gameIsOver = true;
+                      winner = null;
+                      return "O jogo terminou empatado.";
+                  }
                 return "Apanhou a ferramenta " + tool.getName();
             }
 
@@ -332,10 +348,15 @@ public class GameManager {
             currentPlayer.consumeToolThatCancels(item);
             currentTurn++;
             turnManager.nextTurn();
+            if (noOneCanPlay()) {
+                gameIsOver = true;
+                winner = null;
+                return "O jogo terminou empatado.";
+            }
             return "A ferramenta " + item.getName() + " anulou o abismo";
         }
 
-        String message = item.react(currentPlayer);
+        String message = item.react(currentPlayer, turnNumber);
 
         if (item.swapsStuckPlayer()) {
             for (Player p : getPlayersInPosition(position)) {
@@ -347,7 +368,7 @@ public class GameManager {
             if (item.affectsAllPlayersInSlot()) {
                 for (Player p : getPlayersInPosition(position)) {
                     if (p != currentPlayer && p.getStatus() == PlayerStatus.IN_GAME) {
-                        item.react(p);
+                        item.react(p, turnNumber);
                     }
                 }
             }
@@ -356,6 +377,11 @@ public class GameManager {
         if (currentPlayer.getStatus() != PlayerStatus.IN_GAME) {
             currentTurn++;
             turnManager.nextTurn();
+            if (noOneCanPlay()) {
+                gameIsOver = true;
+                winner = null;
+                return "O jogo terminou empatado.";
+            }
             return message;
         }
 
@@ -624,4 +650,46 @@ public class GameManager {
         }
         throw new InvalidFileException();
     }
+
+    public int getTurnNumber(){
+        return turnNumber;
+    }
+    public void setLastMoveDistance(int distance) {
+        this.lastMoveDistance = distance;
+    }
+
+    public int getLastMoveDistance() {
+        return lastMoveDistance;
+    }
+
+    private boolean noOneCanPlay() {
+        for (Player p : players) {
+            if (p.getStatus() != PlayerStatus.IN_GAME) {
+                continue;
+            }
+            if (p.isStuck()) {
+                continue;
+            }
+
+            boolean canMove = false;
+            for (int i = 1; i <= 6; i++) {
+                if (p.getFavoriteLanguages().isEmpty()) {
+                    canMove = true;
+                    break;
+                }
+
+                String lang = p.getFavoriteLanguages().get(0);
+                if (lang.equals("Assembly") && i > 2) continue;
+                if (lang.equals("C") && i > 3) continue;
+                canMove = true;
+                break;
+            }
+            if (canMove) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }
